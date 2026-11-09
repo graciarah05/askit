@@ -1,0 +1,10 @@
+import fs from 'node:fs/promises';
+const url=(process.env.PUBLIC_SUPABASE_URL||'').replace(/\/$/,'');
+const key=process.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY||'';
+const enabled=process.env.PUBLIC_COMMUNITY_ENABLED==='true';
+if(enabled&&(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(url)||!key.startsWith('sb_publishable_')))throw Error('Community needs a valid Supabase URL and publishable key.');
+if(key&&!key.startsWith('sb_publishable_'))throw Error('Use a publishable key, not a secret or legacy key.');
+await fs.rm('dist',{recursive:true,force:true});await fs.cp('public','dist',{recursive:true});
+if(process.env.ASKIT_EVAL_ENABLED!=='true')for(const name of ['evaluation.html','evaluation.js'])await fs.rm('dist/'+name,{force:true});
+await fs.writeFile('dist/config.js',`export const config=${JSON.stringify({supabaseUrl:url,supabasePublishableKey:key,communityEnabled:enabled})};\n`);
+console.log('Built Askit. Community: '+(enabled?'connected configuration':'closed until configured'));

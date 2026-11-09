@@ -1,0 +1,19 @@
+services:
+  - type: cron
+    name: askit-maintenance
+    runtime: node
+    region: singapore
+    plan: 0.5c-512mb
+    schedule: "17 * * * *"
+    buildCommand: "node --check scripts/maintenance.mjs"
+    startCommand: "node scripts/maintenance.mjs"
+    autoDeployTrigger: "off"
+    envVars:
+      - key: NODE_VERSION
+        value: 22.23.2
+      - key: ASKIT_SITE_URL
+        value: https://askit-alpha.vercel.app
+      - key: ASKIT_EXPECT_GENERATION
+        value: "true"
+      - key: ASKIT_MAINTENANCE_TOKEN
+        sync: false

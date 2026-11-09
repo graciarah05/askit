@@ -1,0 +1,25 @@
+{
+  "name": "askit",
+  "version": "1.4.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "start": "node scripts/serve.mjs",
+    "test": "node --test qa/prompt.test.mjs qa/argon/*.test.mjs",
+    "test:browser": "node qa/browser.mjs",
+    "test:database": "node qa/database.mjs",
+    "test:community": "node qa/community-browser.mjs",
+    "preview:file": "node scripts/preview.mjs",
+    "test:argon": "node --test qa/argon/*.test.mjs",
+    "test:usage": "node qa/usage-database.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "axe-core": "4.14.0",
+    "@electric-sql/pglite": "0.5.8"
+  }
+}
