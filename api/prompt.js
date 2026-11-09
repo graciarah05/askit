@@ -23,7 +23,7 @@ export function makeHandler({env=process.env,generate=generatePrompt,reserve=res
       if(!origin||new URL(origin).host!==host||req.headers['sec-fetch-site']==='cross-site') throw new PromptError('origin','이 페이지에서 다시 시도해 주세요.',403);
       if(!String(req.headers['content-type']||'').startsWith('application/json')) throw new PromptError('content_type','요청 형식을 확인해 주세요.',415);
       if(Number(req.headers['content-length'])>MAX_BODY_BYTES) throw new PromptError('too_large','분석할 파일의 크기를 줄여 주세요.',413);
-      let raw=req.body;
+      let raw;try{raw=req.body;}catch{throw new PromptError('invalid_json','요청 형식을 확인해 주세요.');}
       if(raw===undefined){let size=0;const chunks=[];for await(const chunk of req){size+=chunk.length;if(size>MAX_BODY_BYTES)throw new PromptError('too_large','분석할 파일의 크기를 줄여 주세요.',413);chunks.push(chunk);}raw=Buffer.concat(chunks).toString('utf8');}
       if(typeof raw==='string'){if(Buffer.byteLength(raw)>MAX_BODY_BYTES)throw new PromptError('too_large','분석할 파일의 크기를 줄여 주세요.',413);try{raw=JSON.parse(raw)}catch{throw new PromptError('invalid_json','요청 형식을 확인해 주세요.');}}
       if(Buffer.byteLength(JSON.stringify(raw))>MAX_BODY_BYTES)throw new PromptError('too_large','분석할 파일의 크기를 줄여 주세요.',413);

@@ -1,9 +1,10 @@
 # Askit 운영 구성 — 2026-11-10
 
 ## 구성
-- Vercel: 화면, Argon 프롬프트 API, 상태 확인·기록 정리 API. 목표 공개 주소 https://askit-alpha.vercel.app/.
+- Vercel: 화면, Argon 프롬프트 API, 상태 확인·기록 정리 API. 공개 주소 https://askit-alpha.vercel.app/.
 - Supabase: Askit 전용 서울 프로젝트 `ivkkudsyiuxffrefzvda`. 커뮤니티 RLS·이미지 저장소·유료 호출 사용량 원장.
 - Render: `scripts/maintenance.mjs`를 매시간 실행하는 외부 상태 점검·오래된 사용량 기록 정리. 웹 서버를 중복 운영하지 않는다. Gemini 키나 Supabase 비밀 키를 Render에 저장하지 않는다.
+- GitHub→Vercel: main 변경 시 자동 배포 연결 완료. Render는 수동 배포 유지.
 - GitHub: 비공개 `graciarah05/askit`. 비밀 키, node_modules, 실험에 쓴 타인 레퍼런스 이미지 제외.
 
 ## 승인된 비용과 실제 설정
@@ -33,7 +34,21 @@ Render cron은 월 최소 $1, 실행 시간 비례 청구. $7 상시 웹 서버�
 문의/삭제 요청: gsa.teamgemini@gmail.com.
 
 ## 검증 기록
-- 자동 검증 146개 통과.
+- 자동 검증 147개 통과.
 - 사용량·권한·기간 만료·월 경계 예산 검증 22개 통과(PGlite).
 - 커뮤니티 DB 검증 26개 통과(PGlite). 실제 SMTP/클라우드 사용자 흐름 검증을 뜻하지 않는다.
-- 보호 Preview 실제 Argon 요청 1건 성공: 모델 처리 16.694초, 추정 $0.015432. DB 정산 결과 complete 확인. 아직 공개 Production과 Render 실제 실행은 배포 단계에서 확인해야 한다.
+- 보호 Preview 실제 Argon 요청 1건 성공: 모델 처리 16.694초, 추정 $0.015432. DB 정산 결과 complete 확인. 공개 Production도 아래 별도 요청으로 확인했다.
+
+- 공개 Production 이미지 첨부 1건 성공: 모델 처리 23.105초, 추정 $0.018700. 입력에 이미지 1,089 토큰 포함. 실제 첨부 도형의 위치·색을 읽고 고정 문구·비율 조건에 반영, 복사·보관함 저장 확인. 최종 이미지를 이번 배포 점검에서 새로 생성했다는 뜻은 아니다.
+- 이번 연결 실험 2건 합계 $0.034132(추정). 이전 품질 실험 및 사이트 밖 사용료는 제외.
+- Render `crn-dbp3cdugekts73e3a6l0`: 실제 수동 실행 성공. 상태 확인+전용 인증이 있는 기록 정리 모두 통과, 매시간 17분 실행.
+- 공개 GET / 및 /api/health 200. 관리·평가 API는 무인증 404, 다른 Origin 생성 403. 잘못된 JSON 요청이 500으로 분류되던 문제를 수정했고 공개 최종본에서 400 확인.
+- 390px 홈·입력, 320px 직접 입력을 실제 브라우저로 검수. 가로 넘침 없음. Chrome 확장 자동 첨부는 로컬 파일 권한 제한이 있었고 기본 macOS 파일 선택 창으로 실제 첨부를 완료했다.
+- 공개 생성·접근 동작을 검증했으며 이메일 인증 커뮤니티의 최종 개통을 의미하지 않는다.
+
+## 도메인 후보
+2026-11-10 Vercel Registrar 조회, 1년 등록/갱신 USD, 구매 전 변동 가능·세금 별도.
+- askitcampus.com: $12.03 / $12.03 — 학생 대상이 분명한 1순위.
+- getaskit.app: $14.99 / $15.00.
+- askit.study: $1.99 / $35.56 — 갱신비가 높아 우선 추천하지 않음.
+모두 조회 시 구매 가능. 구매는 사용자가 진행하며 아직 DNS·메일 도메인 연결 전이다.

@@ -2,7 +2,7 @@
 
 학생이 자신의 과제 조건에 맞는 Gemini 프롬프트를 준비하고, Google AI 사용법과 다른 학생의 활용 경험을 찾는 모바일 웹입니다.
 
-2026-11-10 · v1.4.0: 작업에 맞는 Google 도구·메뉴·설정과 전용 프롬프트를 함께 제공합니다. Vercel의 보호된 Preview에 Gemini 4 Argon을 연결했습니다. 사용자가 저장한 API 키로 실제 생성·비교 실험을 진행했습니다. 모델은 서버가 선택하므로 Google AI Studio에서 별도로 선택할 필요가 없습니다.
+2026-11-10 · v1.4.0: 작업에 맞는 Google 도구·메뉴·설정과 전용 프롬프트를 함께 제공합니다. Vercel 공개 배포에 Gemini 4 Argon을 연결했습니다. 사용자가 저장한 API 키로 실제 생성·비교 실험을 진행했습니다. 모델은 서버가 선택하므로 Google AI Studio에서 별도로 선택할 필요가 없습니다.
 
 - [도구별 연결·공식 근거·이번 검수 결과](docs/GOOGLE-WORKFLOWS-REVIEW.md)
 - [설정과 현재 연결 범위](docs/ARGON-SETUP.md)
@@ -10,7 +10,7 @@
 - [실제 결과·대기시간·비용 및 한계](docs/ARGON-REVIEW.md)
 - [평가 루브릭](docs/ARGON-VALIDATION.md)
 
-[최종 보호된 Preview](https://askit-pk3vl7xh6-graciarah05-2261s-projects.vercel.app/) — Vercel 로그인이 필요합니다.
+[공개 Askit](https://askit-alpha.vercel.app/) — Vercel 로그인 없이 접속할 수 있습니다.
 
 이번 수정: 파일별 참고 강도, 구도·새 내용의 연결, 고정 문구·기호 보존, 카드뉴스 장별 복사. [실제 이미지 비교](qa/paired/reference-review.html) · [평가와 한계](docs/REFERENCE-FIDELITY-AUDIT.md).
 
@@ -22,7 +22,7 @@
 - 공유형 커뮤니티 연결 코드와 별도 데이터베이스/이미지 저장소 구성: 이메일 인증, 글·활용 사례, 이미지, 댓글·답글, 좋아요, 저장, 신고, 작성자 수정·삭제
 - 커뮤니티 설정이 없으면 닫힘 상태. 로컬 글을 공유된 것처럼 보여주는 대체 동작 없음
 
-Argon은 프롬프트를 작성하고, 사용자가 최종 작업을 안내된 Google 도구에서 실행합니다. 기본 조합 방식도 유지하며 기다리기 싫거나 API 오류가 나면 바로 이어갈 수 있습니다. 공개 Production의 유료 API와 Supabase 클라우드 커뮤니티는 아직 개방하지 않았습니다.
+Argon은 프롬프트를 작성하고, 사용자가 최종 작업을 안내된 Google 도구에서 실행합니다. 기본 조합 방식도 유지하며 기다리기 싫거나 API 오류가 나면 바로 이어갈 수 있습니다. 공개 유료 생성은 승인된 한 달 예산 안에서 열었습니다. Supabase 커뮤니티는 도메인·인증 메일 연결 후 개통합니다.
 
 [공개 배포 구성·예산·남은 작업](docs/DEPLOYMENT.md)
 

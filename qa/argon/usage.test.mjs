@@ -38,3 +38,7 @@ test('monitor validates readiness, rejects redirects and never needs a model key
  const calls=[];const result=await checkService({ASKIT_SITE_URL:'https://askit.example',ASKIT_EXPECT_GENERATION:'true',ASKIT_MAINTENANCE_TOKEN:'test'},async(url,init)=>{calls.push({url:String(url),init});return {ok:true,json:async()=>({ok:true,generation:true,version:'1.4.0',community:false})}});assert(result.ok);assert.equal(calls.length,2);assert(calls.every(x=>x.init.redirect==='error'));assert(!JSON.stringify(calls).includes('GEMINI_API_KEY'));
  await assert.rejects(()=>checkService({ASKIT_SITE_URL:'http://localhost'},async()=>{}));
 });
+
+test('malformed JSON thrown by the host parser returns 400 before reserving',async()=>{
+ let reserved=false;const h=makeHandler({env,reserve:async()=>{reserved=true},log:()=>{}});const r=req();Object.defineProperty(r,'body',{get(){throw SyntaxError('Unexpected end of JSON')}});const out=res();await h(r,out);assert.equal(out.statusCode,400);assert.equal(out.body.error.code,'invalid_json');assert.equal(reserved,false);
+});
