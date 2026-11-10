@@ -1,7 +1,7 @@
 # Askit 운영 구성 — 2026-11-10
 
 ## 구성
-- Vercel: 화면, Argon 프롬프트 API, 상태 확인·기록 정리 API. 공개 주소 https://askit-alpha.vercel.app/.
+- Vercel: 화면, Argon 프롬프트 API, 상태 확인·기록 정리 API. 공개 주소 https://myaskit.com/. 기존 Vercel 주소는 그대로 유지하며 www는 기본 주소로 308 이동한다.
 - Supabase: Askit 전용 서울 프로젝트 `ivkkudsyiuxffrefzvda`. 커뮤니티 RLS·이미지 저장소·유료 호출 사용량 원장.
 - Render: `scripts/maintenance.mjs`를 매시간 실행하는 외부 상태 점검·오래된 사용량 기록 정리. 웹 서버를 중복 운영하지 않는다. Gemini 키나 Supabase 비밀 키를 Render에 저장하지 않는다.
 - GitHub→Vercel: main 변경 시 자동 배포 연결 완료. Render는 수동 배포 유지.
@@ -27,7 +27,7 @@ Render cron은 월 최소 $1, 실행 시간 비례 청구. $7 상시 웹 서버�
 6. Vercel Production 도메인만 공개하고 Preview 보호 유지. Production 환경으로 새 빌드하여 공개 설정 반영.
 
 ## 커뮤니티 개통 조건
-현재 PUBLIC_COMMUNITY_ENABLED=false. 데이터베이스와 연결 코드는 준비됐으나 도메인·SMTP가 없으므로 실제 학생의 인증 이메일 전달은 미검증이다. 사용자가 도메인 구매 후 메일 서비스를 연결하기로 선택했다.
+현재 PUBLIC_COMMUNITY_ENABLED=false. 도메인 myaskit.com과 HTTPS 연결, Resend의 auth.myaskit.com 발송 도메인 인증을 완료했다. Supabase SMTP의 비밀키 입력과 실제 인증 이메일 전달·두 계정 검수는 아직 남아 있다.
 
 도메인 인증, Supabase SMTP/사이트 URL/리디렉션 URL/인증번호 메일 템플릿 설정 후 서로 다른 두 실제 계정으로 가입, 글·댓글·이미지, 소유자 수정·삭제, 계정 삭제 요청 절차를 검수한 뒤 true로 변경한다. 인증을 해제해서 공개하지 않는다.
 
@@ -46,9 +46,17 @@ Render cron은 월 최소 $1, 실행 시간 비례 청구. $7 상시 웹 서버�
 - 390px 홈·입력, 320px 직접 입력을 실제 브라우저로 검수. 가로 넘침 없음. Chrome 확장 자동 첨부는 로컬 파일 권한 제한이 있었고 기본 macOS 파일 선택 창으로 실제 첨부를 완료했다.
 - 공개 생성·접근 동작을 검증했으며 이메일 인증 커뮤니티의 최종 개통을 의미하지 않는다.
 
-## 도메인 후보
-2026-11-10 Vercel Registrar 조회, 1년 등록/갱신 USD, 구매 전 변동 가능·세금 별도.
-- askitcampus.com: $12.03 / $12.03 — 학생 대상이 분명한 1순위.
-- getaskit.app: $14.99 / $15.00.
-- askit.study: $1.99 / $35.56 — 갱신비가 높아 우선 추천하지 않음.
-모두 조회 시 구매 가능. 구매는 사용자가 진행하며 아직 DNS·메일 도메인 연결 전이다.
+## 도메인·메일 연결 — 2026-11-10
+- 구매: 가비아 myaskit.com. 가비아 DNS 사용 유지.
+- 웹 DNS: A @ → 216.150.1.1, 216.150.16.1 / CNAME www → e81616e90196db25.vercel-dns-016.com. 실제 Vercel 프로젝트의 추천값을 확인해 적용.
+- Vercel: 두 도메인 소유 확인, DNS 정상, 자동 갱신 HTTPS 인증서 발급. 실제 기본 주소 200, www 308→기본 주소, /api/health 200 확인.
+- Supabase Site URL: https://myaskit.com. 인증번호 입력 방식이므로 임의 리디렉션·와일드카드는 추가하지 않음.
+- Resend: 무료 플랜, Tokyo, auth.myaskit.com 인증 완료. 발신자 Askit <login@auth.myaskit.com>, smtp.resend.com:465, 사용자 resend. 비밀키는 Supabase SMTP에만 저장하며 저장소·문서에는 기록하지 않음.
+- Render 점검 주소를 myaskit.com으로 변경. 설정 변경으로 배포가 시작됨. 최종 실행 확인은 이어서 기록.
+
+## Render Pro 필요성 검토 — 2026-11-10
+현재 작업 공간은 Hobby($0 + 개별 서비스 사용료). 연결된 작업은 기존 puang-api와 Askit 점검 작업 2개이며, 월 사용량은 8MB/5GB, 빌드 1분/500분, 서비스 2개/25개였다. Askit 점검은 최근 3회 모두 성공. 짧은 작업의 CPU·메모리 시계열은 조회 결과가 없어 부하 성능을 단정하지 않는다.
+
+현재 계정에 제시된 Pro는 월 $25 + 별도 서비스 사용료이며, 팀원 초대·수평 자동 확장·추가 환경 등이 주된 차이. Askit 요청은 Vercel/Gemini와 Supabase가 처리하므로 현 구성에서는 Pro로 얻는 직접적인 사용자 성능 이익이 없다. Hobby 유지. 기존 puang-api 비용과 Askit 비용을 구분하며 결제 화면의 전체 작업 공간 예상액을 Askit 비용으로 간주하지 않는다.
+
+근거: https://render.com/pricing , https://render.com/docs/cronjobs#compute-plans-and-billing , 연결된 작업 공간 Billing·서비스·실행 로그.

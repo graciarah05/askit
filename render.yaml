@@ -12,7 +12,7 @@ services:
       - key: NODE_VERSION
         value: 22.23.2
       - key: ASKIT_SITE_URL
-        value: https://askit-alpha.vercel.app
+        value: https://myaskit.com
       - key: ASKIT_EXPECT_GENERATION
         value: "true"
       - key: ASKIT_MAINTENANCE_TOKEN

@@ -10,7 +10,7 @@
 - [실제 결과·대기시간·비용 및 한계](docs/ARGON-REVIEW.md)
 - [평가 루브릭](docs/ARGON-VALIDATION.md)
 
-[공개 Askit](https://askit-alpha.vercel.app/) — Vercel 로그인 없이 접속할 수 있습니다.
+[공개 Askit](https://myaskit.com/) — Vercel 로그인 없이 접속할 수 있습니다.
 
 이번 수정: 파일별 참고 강도, 구도·새 내용의 연결, 고정 문구·기호 보존, 카드뉴스 장별 복사. [실제 이미지 비교](qa/paired/reference-review.html) · [평가와 한계](docs/REFERENCE-FIDELITY-AUDIT.md).
 
