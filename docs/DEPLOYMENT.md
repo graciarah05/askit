@@ -26,10 +26,12 @@ Render cron은 월 최소 $1, 실행 시간 비례 청구. $7 상시 웹 서버�
 5. Render에는 ASKIT_SITE_URL, ASKIT_EXPECT_GENERATION=true, 전용 ASKIT_MAINTENANCE_TOKEN만 설정. `render.yaml` 참고.
 6. Vercel Production 도메인만 공개하고 Preview 보호 유지. Production 환경으로 새 빌드하여 공개 설정 반영.
 
-## 커뮤니티 개통 조건
-현재 PUBLIC_COMMUNITY_ENABLED=false. 도메인 myaskit.com과 HTTPS 연결, Resend의 auth.myaskit.com 발송 도메인 인증을 완료했다. Supabase SMTP의 비밀키 입력과 실제 인증 이메일 전달·두 계정 검수는 아직 남아 있다.
+## 커뮤니티 개통
+Vercel Production·Preview에 PUBLIC_COMMUNITY_ENABLED=true 설정을 저장했다. 새 빌드부터 반영한다. 도메인 myaskit.com과 HTTPS, Resend의 auth.myaskit.com 발송 도메인 인증, Supabase SMTP 연결을 완료했다. 가입·로그인 메일은 한국어 인증번호 방식이다.
 
-도메인 인증, Supabase SMTP/사이트 URL/리디렉션 URL/인증번호 메일 템플릿 설정 후 서로 다른 두 실제 계정으로 가입, 글·댓글·이미지, 소유자 수정·삭제, 계정 삭제 요청 절차를 검수한 뒤 true로 변경한다. 인증을 해제해서 공개하지 않는다.
+공개 전 격리된 로컬 화면을 실제 Supabase·Resend에 연결해 두 실제 계정으로 인증, 공유 글·댓글·좋아요, 소유자 수정, 이미지 업로드를 검수했다. 다른 계정의 글 수정·삭제 및 소유자 위조는 실제 authenticated 역할로 거부됨을 확인했다. 승인받은 검수 글 두 개를 화면에서 삭제했고 연결된 댓글·좋아요·저장 이미지까지 0건을 확인했다. 검수 계정은 삭제하지 않았다. 인증과 RLS를 유지한다.
+
+Resend의 Delivered 상태는 수신 메일 서버의 수락을 뜻하며 Gmail 기본 받은편지함 배치를 보증하지 않는다. 계정 삭제 요청은 아래 운영 이메일에서 수동 처리하며 이번 검수에서 계정 자체를 삭제하지 않았다. 무료 메일 발송 한도는 하루 100통·월 3,000통이다.
 
 문의/삭제 요청: gsa.teamgemini@gmail.com.
 
@@ -44,7 +46,8 @@ Render cron은 월 최소 $1, 실행 시간 비례 청구. $7 상시 웹 서버�
 - Render `crn-dbp3cdugekts73e3a6l0`: 실제 수동 실행 성공. 상태 확인+전용 인증이 있는 기록 정리 모두 통과, 매시간 17분 실행.
 - 공개 GET / 및 /api/health 200. 관리·평가 API는 무인증 404, 다른 Origin 생성 403. 잘못된 JSON 요청이 500으로 분류되던 문제를 수정했고 공개 최종본에서 400 확인.
 - 390px 홈·입력, 320px 직접 입력을 실제 브라우저로 검수. 가로 넘침 없음. Chrome 확장 자동 첨부는 로컬 파일 권한 제한이 있었고 기본 macOS 파일 선택 창으로 실제 첨부를 완료했다.
-- 공개 생성·접근 동작을 검증했으며 이메일 인증 커뮤니티의 최종 개통을 의미하지 않는다.
+- 위 자동 검증과 기존 생성 실험은 이전 배포에서 실행한 결과다. 이번 도메인 연결 후 복잡한 팀 일정 프롬프트 생성 1건을 추가 확인했으며 DB 정산 complete, 추정 $0.014222였다. 새 요청의 정확한 대기시간은 별도로 측정하지 않았다.
+- 실제 커뮤니티 검증 범위는 위 개통 항목에 기록했다. 최종 공개 주소 확인 결과는 로컬 qa/paired/launch/release-results.json에 별도로 기록한다.
 
 ## 도메인·메일 연결 — 2026-11-10
 - 구매: 가비아 myaskit.com. 가비아 DNS 사용 유지.
@@ -52,7 +55,7 @@ Render cron은 월 최소 $1, 실행 시간 비례 청구. $7 상시 웹 서버�
 - Vercel: 두 도메인 소유 확인, DNS 정상, 자동 갱신 HTTPS 인증서 발급. 실제 기본 주소 200, www 308→기본 주소, /api/health 200 확인.
 - Supabase Site URL: https://myaskit.com. 인증번호 입력 방식이므로 임의 리디렉션·와일드카드는 추가하지 않음.
 - Resend: 무료 플랜, Tokyo, auth.myaskit.com 인증 완료. 발신자 Askit <login@auth.myaskit.com>, smtp.resend.com:465, 사용자 resend. 비밀키는 Supabase SMTP에만 저장하며 저장소·문서에는 기록하지 않음.
-- Render 점검 주소를 myaskit.com으로 변경. 설정 변경으로 배포가 시작됨. 최종 실행 확인은 이어서 기록.
+- Render 점검 주소를 myaskit.com으로 변경하고 배포 완료. 2026-11-10 12:29 KST 수동 실행에서 상태 확인·인증된 기록 정리 성공을 확인했다.
 
 ## Render Pro 필요성 검토 — 2026-11-10
 현재 작업 공간은 Hobby($0 + 개별 서비스 사용료). 연결된 작업은 기존 puang-api와 Askit 점검 작업 2개이며, 월 사용량은 8MB/5GB, 빌드 1분/500분, 서비스 2개/25개였다. Askit 점검은 최근 3회 모두 성공. 짧은 작업의 CPU·메모리 시계열은 조회 결과가 없어 부하 성능을 단정하지 않는다.
