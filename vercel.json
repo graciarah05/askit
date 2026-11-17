@@ -45,6 +45,12 @@
     },
     "api/evaluate.js": {
       "maxDuration": 150
+    },
+    "api/analytics.js": {
+      "maxDuration": 30
+    },
+    "api/stats.js": {
+      "maxDuration": 30
     }
   }
 }

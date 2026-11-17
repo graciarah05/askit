@@ -7,6 +7,6 @@ export default async function handler(req,res){
   const database=await usageRPC('askit_health');
   const generation=availability().enabled&&database?.generationEnabled===true;
   res.statusCode=database?.database?200:503;
-  res.end(JSON.stringify({ok:database?.database===true,version:'1.4.0',generation,community:process.env.PUBLIC_COMMUNITY_ENABLED==='true'}));
- }catch{res.statusCode=503;res.end(JSON.stringify({ok:false,version:'1.4.0'}));}
+  res.end(JSON.stringify({ok:database?.database===true,version:'1.5.0',generation,community:process.env.PUBLIC_COMMUNITY_ENABLED==='true'}));
+ }catch{res.statusCode=503;res.end(JSON.stringify({ok:false,version:'1.5.0'}));}
 }

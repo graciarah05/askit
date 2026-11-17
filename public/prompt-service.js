@@ -1,3 +1,4 @@
+import {measurementContext} from './analytics.js';
 import {getAttachment} from './attachments.js';
 
 export const promptService={enabled:false,checked:false};
@@ -28,7 +29,7 @@ export async function requestPrompt(draft,{clarification='',signal,fetchImpl=fet
     files.push({id:meta.id,mime,data});
   }
   const started=performance.now();
-  const response=await fetchImpl('/api/prompt',{method:'POST',headers:{'Content-Type':'application/json'},signal,body:JSON.stringify({requestId:crypto.randomUUID(),draft,files,clarification})});
+  const response=await fetchImpl('/api/prompt',{method:'POST',headers:{'Content-Type':'application/json'},signal,body:JSON.stringify({requestId:crypto.randomUUID(),draft,files,clarification,measurement:await measurementContext()})});
   let result;try{result=await response.json();}catch{throw Error('응답을 읽지 못했어요. 입력은 그대로 남아 있습니다.');}
   if(!response.ok)throw Error(result.error?.message||'AI에 연결하지 못했어요. 입력은 그대로 남아 있습니다.');
   if(!['ready','needs_clarification'].includes(result.status)||(result.status==='ready'&&typeof result.text!=='string'))throw Error('완성된 프롬프트를 받지 못했어요.');
